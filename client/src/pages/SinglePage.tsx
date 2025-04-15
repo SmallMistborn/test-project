@@ -18,15 +18,22 @@ function SinglePage() {
       .catch(err => {
         console.error('Failed to fetch item', err);
       });
-  }, []);
-
+  }, [id]);
+    if (!item) {
+        return (
+            <div className="detail">
+                <Link to={'/'}>Go Back</Link>
+                <h2>Loading...</h2>
+            </div>
+        );
+    }
   return (
     <div className="detail">
         <Link to={'/'}>Go Back</Link>
       <h2>Item Details</h2>
-      <p>ID: {item!.id}</p>
-      <p>Name: {item!.name}</p>
-      <p>Description: {item!.description}</p>
+      <p>ID: {item.id}</p>
+      <p>Name: {item.name}</p>
+      <p>Description: {item.description}</p>
     </div>
   );
 }

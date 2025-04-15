@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState} from 'react';
 import { ListItem } from './components';
 import useData from './useData';
 import useSort from './useSort';
@@ -12,10 +12,9 @@ function ListPage() {
     const [sortedItems, sortBy, handleSortClick] = useSort(items);
     
     const [activeItemId,  setActiveItemId] = useState<any>(null);
-    const [filteredItems, setFilteredItems] = useState<any[]>([]);
     const [query, setQuery] = useState<string>('');
     
-    const activeItemText = useMemo(() => activeItemId ? activeItemId : 'Empty', []);
+    const activeItemText = activeItemId ?? 'Empty'; //решила, что ?? в этом случае более читаемый и экономный по памяти
     
   const handleItemClick = (id: any) => {
     setActiveItemId(id);
@@ -24,16 +23,19 @@ function ListPage() {
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setQuery(event.target.value);
   }
-    
-    useEffect(() => {
-        setFilteredItems(sortedItems);
-    }, [sortedItems]);
-  
-    useEffect(() => {
-        if (query.length > 0) {
-            setFilteredItems(filteredItems.filter(item => `${item.id}`.includes(query.toLowerCase().trimStart().trimEnd().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))));
-        }
-    }, [query, filteredItems]);
+
+    const filteredItems = useMemo(() => {
+        const normalizedQuery = query
+            .toLowerCase()
+            .trim()
+            .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        return sortedItems.filter((item) =>
+            `${item.id}`.includes(normalizedQuery)
+        );
+    }, [query, sortedItems]);
+
+
 
   return (
     <div className={'list-wrapper'}>
