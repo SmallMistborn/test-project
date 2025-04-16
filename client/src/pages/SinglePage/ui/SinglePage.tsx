@@ -7,7 +7,7 @@ type ItemType = {
   description: string;
 };
 
-function SinglePage() {
+export function SinglePage() {
   const { id } = useParams();
   const [item, setItem] = useState<ItemType | null>(null);
 
@@ -38,4 +38,4 @@ function SinglePage() {
   );
 }
 
-export default SinglePage;
+

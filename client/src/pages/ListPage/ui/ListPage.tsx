@@ -1,13 +1,11 @@
 import React, { useMemo, useState} from 'react';
-import { ListItem } from './components';
-import useData from './useData';
-import useSort from './useSort';
+import { ListItem } from '../../../features/list-item';
+import useData from '../../../shared/api/useData';
+import useSort from '../../../shared/api/useSort';
+import {SubTitle} from './components/SubTitle';
 
-const SubTitle: React.FC<any> = ({children}) => (
-    <h2 className={'list-subtitle'}>Active Item ID: {children}</h2>
-)
 
-function ListPage() {
+export function ListPage() {
     const items = useData();
     const [sortedItems, sortBy, handleSortClick] = useSort(items);
     
@@ -51,7 +49,7 @@ function ListPage() {
                 {filteredItems.map((item, index) => (
                     <ListItem
                         key={index}
-                        isactive={activeItemId===item.id}
+                        isActive={activeItemId===item.id}
                         id={item.id}
                         name={item.name}
                         description={item.description}
